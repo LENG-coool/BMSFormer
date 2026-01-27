@@ -3,7 +3,7 @@ import katex from 'markdown-it-katex'
 
 export default defineConfig({
   base: '/BMSFormer/',
-  title: 'SHAP+热力学仿真辅助随机森林',
+  title: 'BMSFormer',
   description: '柴油机燃烧室故障可解释性分析',
   lang: 'zh-CN',
 
@@ -132,7 +132,7 @@ export default defineConfig({
     nav: [{ text: '首页', link: '/' }],
     
     sidebar: {
-        '/SHAP/': [{
+        '/BMSF/': [{
           text: '文章大纲',
           items: [
             { text: '引言', link: '/SHAP/shap#引言' },
@@ -143,7 +143,7 @@ export default defineConfig({
             { text: '原始文献', link: '/SHAP/shap#原始文献' }
           ]
         }],
-        '/en/SHAP/': [{
+        '/en/BMSF/': [{
           text: 'Outline',
           items: [
             { text: 'Introduction', link: '/en/SHAP/shap#Introduction'},
@@ -154,7 +154,7 @@ export default defineConfig({
             { text: 'Original Reference', link: '/en/SHAP/shap#Reference' }
           ]
         }],
-        '/it/SHAP/': [{
+        '/it/BMSF/': [{
           text: 'Sommario',
           items: [
             { text: 'Introduzione', link: '/it/SHAP/shap#introduzione' },
@@ -165,7 +165,7 @@ export default defineConfig({
             { text: 'Letteratura Originale', link: '/it/SHAP/shap#letteratura' }
           ]
         }],
-        '/ru/SHAP/': [{
+        '/ru/BMSF/': [{
           text: 'Содержание',
           items: [
             { text: 'Введение', link: '/ru/SHAP/shap#введение' },
@@ -175,46 +175,6 @@ export default defineConfig({
             { text: 'Анализ объяснимости', link: '/ru/SHAP/shap#анализ' },
             { text: 'Оригинальная Литература', link: '/ru/SHAP/shap#литература'}
           ]
-        }],
-        '/overall/': [{
-          text: '文章大纲',
-          items: [
-            { text: '引言', link: '/overall/all#引言' },
-            { text: '整体框架', link: '/overall/all#框架' },
-            { text: '热力学模型构建', link: '/overall/all#模型' },
-            { text: '物理建模与仿真', link: '/overall/all#故障建模' },
-            { text: '基于RF与SHAP的特征筛选', link: '/overall/all#特征筛选' },
-            { text: '实验结果与性能评估', link: '/overall/all#实验结果' }],
-        }],
-        '/en/overall/': [{
-          text: 'Article Outline',
-          items: [
-            { text: 'Introduction', link: '/en/overall/all#引言' },
-            { text: 'The TSRF Framework', link: '/en/overall/all#框架' },
-            { text: 'Thermodynamic Model Construction', link: '/en/overall/all#模型' },
-            { text: 'Simulation of Typical Faults', link: '/en/overall/all#故障建模' },
-            { text: 'Feature Selection via RF and SHAP', link: '/en/overall/all#特征筛选' },
-            { text: 'Experimental Results', link: '/en/overall/all#实验结果' }],
-        }],
-        '/it/overall/': [{
-          text: 'Sommario Articoli',
-          items: [
-            { text: 'Introduzione', link: '/it/overall/all#introduzione' },
-            { text: 'Il Framework TSRF', link: '/it/overall/all#framework' },
-            { text: 'Costruzione del Modello Termodinamico', link: '/it/overall/all#modello' },
-            { text: 'Simulazione dei Guasti Tipici', link: '/it/overall/all#guasti' },
-            { text: 'Selezione delle Caratteristiche via RF e SHAP', link: '/it/overall/all#selezione' },
-            { text: 'Risultati Sperimentali', link: '/it/overall/all#risultati' }],
-        }],
-        '/ru/overall/': [{
-          text: 'Содержание Статьи',
-          items: [
-            { text: 'Введение', link: '/ru/overall/all#введение' },
-            { text: 'Основа TSRF', link: '/ru/overall/all#основа' },
-            { text: 'Построение Термодинамической Модели', link: '/ru/overall/all#модель' },
-            { text: 'Моделирование Типичных Отказов', link: '/ru/overall/all#отказы' },
-            { text: 'Выбор признаков посредством RF и SHAP', link: '/ru/overall/all#выбор' },
-            { text: 'Экспериментальные результаты', link: '/ru/overall/all#результаты' }],
         }],
       }
   }
