@@ -41,7 +41,6 @@ export default defineConfig({
     }
   },
 
-
   themeConfig: {
     logoLink: '#',                  
     socialLinks: [{ icon: 'github', link: 'https://github.com/LENG-coool/BMSFormer' }],
