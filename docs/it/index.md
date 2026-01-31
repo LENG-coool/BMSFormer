@@ -55,11 +55,11 @@ Gli autori estraggono indicatori di salute da segmenti SOC ad alta frequenza dur
 Gli esperimenti dimostrano che il coefficiente di correlazione di Pearson (PCC) tra gli indicatori estratti con questo metodo e lo SOH della batteria è in media superiore a 0,99.
 
 ## Prestazioni Sperimentali{#prestazioni-sperimentali}
-Attraverso la validazione sui tre dataset autorevoli **Oxford, NASA e CALCE**, BMSFormer dimostra vantaggi schiaccianti:
+Attraverso la validazione sui tre dataset autorevoli **Oxford, NASA e CALCE**, BMSFormer verifica la sua efficacia nella previsione della vita della batteria:
 
-- **Accuratezza leader**: su tutti i dataset, le sue metriche di errore (*MAE* e *RMSE*) sono le più basse. Rispetto ai modelli LSTM tradizionali, l'errore medio è ridotto dal 47% al 73%.
+- **Miglioramento dell'accuratezza di stima**: su tutti i dataset, le sue metriche di errore (*MAE* e *RMSE*) sono le più basse. Rispetto ai modelli LSTM tradizionali, l'errore medio è ridotto dal 47% al 73%.
 
-- **Fitting quasi perfetto**: i suoi punteggi *R²* sono i più vicini a 1 in tutti gli scenari (fino a 0,9934), dimostrando che le sue previsioni sono più strettamente allineate con lo stato di salute reale.
+- **Elevata bontà di adattamento**: i suoi punteggi *R²* sono i più vicini a 1 in tutti gli scenari (fino a 0,9934), dimostrando che le sue previsioni sono più strettamente allineate con lo stato di salute reale.
 <table style="width:100%; border-collapse: collapse; text-align: center;" border="1">
   <thead>
     <tr style="background-color: #f2f2f2;">

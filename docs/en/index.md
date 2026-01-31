@@ -55,11 +55,11 @@ The authors extract health indicators from high-frequency SOC segments during ch
 Experiments demonstrate that the Pearson correlation coefficient (PCC) between the indicators extracted by this method and battery SOH averages over 0.99.
 
 ## Experimental Performance{#experimental-performance}
-Through validation on the three authoritative datasets **Oxford, NASA, and CALCE**, BMSFormer demonstrates overwhelming advantages:
+Through validation on the three authoritative datasets **Oxford, NASA, and CALCE**, BMSFormer verifies its effectiveness in battery life prediction:
 
-- **Leading accuracy**: On all datasets, its error metrics (*MAE* and *RMSE*) are the lowest. Compared to traditional LSTM models, the average error is reduced by 47% to 73%.
+- **Improved estimation accuracy**: On all datasets, its error metrics (*MAE* and *RMSE*) are the lowest. Compared with traditional LSTM models, the average error is reduced by 47% to 73%.
 
-- **Near-perfect fitting**: Its *R²* scores are closest to 1 across all scenarios (up to 0.9934), proving that its predictions are most closely aligned with true health status.
+- **High goodness of fit**: Its *R²* scores are closest to 1 across all scenarios (up to 0.9934), proving that its predictions are most closely aligned with true health status.
 <table style="width:100%; border-collapse: collapse; text-align: center;" border="1">
   <thead>
     <tr style="background-color: #f2f2f2;">

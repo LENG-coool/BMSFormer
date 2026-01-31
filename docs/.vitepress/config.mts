@@ -12,7 +12,7 @@ export default defineConfig({
       lang: 'zh-CN', 
       link: '/', 
       themeConfig: {
-        siteTitle: '深度可分离卷积'
+
       }
     }, 
     en: { 
@@ -20,7 +20,7 @@ export default defineConfig({
       lang: 'en-US', 
       link: '/en/', 
       themeConfig: {
-        siteTitle: 'Depthwise Separable Convolution'
+
       }
     },
     it: { 
@@ -28,7 +28,7 @@ export default defineConfig({
       lang: 'it-IT', 
       link: '/it/', 
       themeConfig: {
-        siteTitle: 'Convoluzione Depthwise Separable' 
+
       }
     },
     ru: { 
@@ -36,7 +36,7 @@ export default defineConfig({
       lang: 'ru-RU', 
       link: '/ru/', 
       themeConfig: {
-        siteTitle: 'Глубинная сепарабельная свертка' 
+
       }
     }
   },
