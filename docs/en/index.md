@@ -1,70 +1,70 @@
-# 面向嵌入式系统的轻量化锂电池 SOH 估计：BMSFormer 的设计与应用
-## 引言{#引言}
-在电动汽车、航空航天等领域，**锂电池的健康状态估计**是确保系统安全的关键。然而，现有的电池管理系统面临着一个“鱼与熊掌”的困境：
+# Lightweight Lithium Battery SOH Estimation for Embedded Systems: Design and Application of BMSFormer
+## Introduction{#introduction}
+In fields such as electric vehicles and aerospace, **lithium battery state-of-health estimation** is crucial for ensuring system safety. However, existing battery management systems face a dilemma:
 
-- 深度学习模型：虽然能够提供准确的预测，但其计算复杂度过高，难以在资源受限的嵌入式设备上运行；
-- 传统模型:虽然计算开销小，但在面对复杂的电池非线性退化时，精度往往难以令人满意。
+- Deep learning models: Although capable of providing accurate predictions, their computational complexity is too high, making them difficult to run on resource-constrained embedded devices;
+- Traditional models: Although computationally lightweight, their accuracy is often unsatisfactory when dealing with complex battery nonlinear degradation.
 
-近期发表在《*Energy*》上的论文《***BMSFormer An efficient deep learning model for online state-of-health***》提出了一种名为 **BMSFormer**的轻量化深度学习模型，通过平衡计算效率与预测精度，为电池在线监测提供了新的解决方案。
+A recent paper published in *Energy*, titled ***BMSFormer: An efficient deep learning model for online state-of-health estimation of lithium-ion batteries under high-frequency early SOC data with strong correlated single health indicator***, proposes a lightweight deep learning model called **BMSFormer** that provides a new solution for battery online monitoring by balancing computational efficiency and prediction accuracy.
 
-## SOH估计方法{#SOH方法}
-目前的 SOH 估计研究主要面临三大痛点：
-- 计算复杂度高：模型堆叠导致参数过多，难以适配内存极小的 BMS 硬件。
-- 精度不稳定：受限于健康指标的提取质量，面对突发的容量回升或复杂工况时误差较大。
-- 调参困难：模型性能对超参数高度敏感，实际部署时的鲁棒性较差。
+## SOH Estimation Method{#soh-method}
+Current SOH estimation research faces three major challenges:
+- High computational complexity: Model stacking leads to excessive parameters, making it difficult to adapt to BMS hardware with minimal memory.
+- Unstable accuracy: Limited by the quality of health indicator extraction, large errors occur when facing sudden capacity recovery or complex operating conditions.
+- Difficult hyperparameter tuning: Model performance is highly sensitive to hyperparameters, resulting in poor robustness in actual deployment.
 
-论文采用了**牛津大学、美国国家航空航天局和马里兰大学**先进生命周期工程中心的三种主流电池数据集，所提出的 SOH 估计方法来解决以上问题，包括以下四个步骤：
+The paper employs three mainstream battery datasets from **the University of Oxford, NASA, and the Center for Advanced Life Cycle Engineering at the University of Maryland** to address these issues with the proposed SOH estimation method, which includes the following four steps:
 
-（1）**数据采集**：对三种不同化学体系的电池在多种充放电协议下进行全生命周期老化试验，以评估所提模型。
+(1) **Data Collection**: Full life cycle aging experiments are conducted on batteries with three different chemical systems under various charge-discharge protocols to evaluate the proposed model.
 
-（2）**特征工程**：提取每个循环的恒流充放电时间作为健康指标（*HIs*）。从选定区间开始，通过逐步缩小窗口大小和步长进行健康指标搜索，直至窗口大小达到 0.01V 或未找到更高的皮尔逊相关系数（*PCC*）值。随后采用滑动窗口将健康指标时序数据划分为多个子集，每个窗口下一个时间步的真实 SOH 作为对应子集的标签。
+(2) **Feature Engineering**: Constant current charge-discharge time from each cycle is extracted as health indicators (*HIs*). Starting from a selected interval, health indicator search is performed by gradually reducing window size and step size until the window size reaches 0.01V or no higher Pearson correlation coefficient (*PCC*) is found. Subsequently, sliding windows are used to divide the health indicator time series data into multiple subsets, with the true SOH of the next time step under each window serving as the label for the corresponding subset.
 
-（3）**模型训练**：为方便实验，选取 Cell1、B0005 和 CS2-35 作为训练集，使用前 30% 的数据在 384 种超参数组合下进行训练，剩余 70% 的数据用于验证和对比，以筛选出性能最优的模型。随后，将最优模型直接在对应数据集的其他电池全量数据上进行测试，评估模型的泛化能力，并将 BMSFormer 与四种不同的深度学习模型进行性能对比。
+(3) **Model Training**: For experimental convenience, Cell1, B0005, and CS2-35 are selected as training sets, using the first 30% of data for training under 384 hyperparameter combinations, and the remaining 70% for validation and comparison to select the best-performing model. Subsequently, the optimal model is directly tested on the full data of other batteries in the corresponding dataset to evaluate the model's generalization ability, and BMSFormer is compared with four different deep learning models.
 
-（4）**模型评估**：从精度、效率和稳定性三个维度对不同模型进行评估。采用四种典型评估指标衡量精度，四种常用计算复杂度指标评估训练效率，通过 384 种超参数组合的*R2*结果评估训练结果的稳定性。
-<img src="/图片1.png" style="width: 100%; margin: 0 auto; display: block;" />
-<p align="center" style="color: grey">开发的SOH估计方法流程图</p>
+(4) **Model Evaluation**: Different models are evaluated from three dimensions: accuracy, efficiency, and stability. Four typical evaluation metrics are used to measure accuracy, four commonly used computational complexity metrics to assess training efficiency, and the *R²* results from 384 hyperparameter combinations to evaluate the stability of training results.
+<img src="/en图片1.png" style="width: 100%; margin: 0 auto; display: block;" />
+<p align="center" style="color: grey">Flowchart of the developed SOH estimation method</p>
 
-## BMSFormer模型{#BMSFormer模型}
-1. **整体框架**
+## BMSFormer Model{#bmsformer-model}
+1. **Overall Framework**
 
-模型整体框架如图所示，具体流程如下：以健康指标（HIs）为输入，通过窗口分割将其划分为片段，嵌入至高维空间后输入 BMSFormer 块（包含 LGFA 模块和 DSConv-L 模块）；LGFA 模块的输出经过转置操作后，输入 DSConv-L 模块，再进行逆转置操作；最后，所有 BMSFormer 块的输出输入多层感知机（MLP）层，最终输出估计结果。训练过程中，以每个窗口片段的下一个时间步的真实 SOH 值作为标签，指导模型进行梯度下降优化。
-<img src="/图片2.png" style="width: 100%; margin: 0 auto; display: block;" />
-<p align="center" style="color: grey">BMSFormer框架图</p>
+The overall framework of the model is shown in the figure. The specific process is as follows: using health indicators (HIs) as input, they are divided into segments through window segmentation, embedded into high-dimensional space, and then input into BMSFormer blocks (containing LGFA module and DSConv-L module); the output of the LGFA module is transposed and then input into the DSConv-L module, followed by inverse transpose operation; finally, the outputs of all BMSFormer blocks are fed into a multilayer perceptron (MLP) layer to produce the final estimation result. During training, the true SOH value of the next time step for each window segment serves as the label to guide the model for gradient descent optimization.
+<img src="/en图片2.png" style="width: 100%; margin: 0 auto; display: block;" />
+<p align="center" style="color: grey">BMSFormer framework diagram</p>
 
-2. **局部-全局融合注意力机制**(LGFA)
+2. **Local-Global Fusion Attention** (LGFA)
 
-传统的Transformer使用Softmax注意力，计算复杂度随序列长度呈平方级增长。
+Traditional Transformers use Softmax attention, with computational complexity growing quadratically with sequence length.
 
-而BMSFormer构建了LGFA模块，将复杂度降至线性级。它不仅能像传统模型那样捕捉长期退化趋势，还能对短期波动保持高度敏感，且更适合在移动设备上快速计算 。
+BMSFormer constructs an LGFA module that reduces complexity to linear level. It can not only capture long-term degradation trends like traditional models but also maintain high sensitivity to short-term fluctuations and is more suitable for fast computation on mobile devices.
 
-3. **多尺度深度可分离卷积**(DSConv)
+3. **Multi-scale Depthwise Separable Convolution** (DSConv)
 
-为了进一步丰富特征提取，BMSFormer 嵌入了两种不同维度的卷积模块 ：
-- DSConv-S：小核卷积，负责捕捉细节特征 。
-- DSConv-L：大核卷积，负责提取长程依赖 。
+To further enrich feature extraction, BMSFormer embeds two convolutional modules of different dimensions:
+- DSConv-S: Small kernel convolution, responsible for capturing detailed features.
+- DSConv-L: Large kernel convolution, responsible for extracting long-range dependencies.
 
-相比标准卷积，这种设计在保持特征多样性的同时，大幅减少了参数量和计算量 。
-<img src="/图片3.png" style="width: 100%; margin: 0 auto; display: block;" />
-<p align="center" style="color: grey">DSConv基本结构图</p>
+Compared to standard convolution, this design significantly reduces the number of parameters and computational cost while maintaining feature diversity.
+<img src="/en图片3.png" style="width: 100%; margin: 0 auto; display: block;" />
+<p align="center" style="color: grey">DSConv basic structure diagram</p>
 
-4. **强相关“单健康指标”搜索**
+4. **Strongly Correlated "Single Health Indicator" Search**
 
-文章作者通过逐步精细化的搜索算法，在充电（3.8V-4.2V）和放电（3.8V-3.4V）的高频 SOC 片段中提取健康指标。
+The authors extract health indicators from high-frequency SOC segments during charging (3.8V-4.2V) and discharging (3.8V-3.4V) through a progressively refined search algorithm.
 
-实验证明，这种方法提取的指标与电池 SOH 的皮尔逊相关系数（PCC）平均超过 0.99 。
+Experiments demonstrate that the Pearson correlation coefficient (PCC) between the indicators extracted by this method and battery SOH averages over 0.99.
 
-## 实验表现{#实验表现}
-通过在**Oxford、NASA 和 CALCE**三大权威数据集上的验证，BMSFormer展现了压倒性的优势：
+## Experimental Performance{#experimental-performance}
+Through validation on the three authoritative datasets **Oxford, NASA, and CALCE**, BMSFormer demonstrates overwhelming advantages:
 
-- 精度断层领先：在所有数据集上，其误差指标（$MAE$ 和 $RMSE$）均为最低 。相比传统$LSTM$模型，平均误差降低了$47\%$ 至 $73\%$。
+- **Leading accuracy**: On all datasets, its error metrics (*MAE* and *RMSE*) are the lowest. Compared to traditional LSTM models, the average error is reduced by 47% to 73%.
 
-- 拟合近乎完美：其$R^{2}$评分在各场景下均最接近 $1$（最高达 $0.9934$），证明其预测值与真实健康状态最为贴合。
+- **Near-perfect fitting**: Its *R²* scores are closest to 1 across all scenarios (up to 0.9934), proving that its predictions are most closely aligned with true health status.
 <table style="width:100%; border-collapse: collapse; text-align: center;" border="1">
   <thead>
     <tr style="background-color: #f2f2f2;">
-      <th>数据集类型</th>
-      <th>评估指标</th>
+      <th>Dataset Type</th>
+      <th>Evaluation Metric</th>
       <th><strong>BMSFormer</strong></th>
       <th>CNN-Transformer</th>
       <th>Transformer</th>
@@ -74,7 +74,7 @@
   </thead>
   <tbody>
     <tr>
-      <td rowspan="3"><strong>Oxford</strong><br>(8个电池平均)</td>
+      <td rowspan="3"><strong>Oxford</strong><br>(Average of 8 cells)</td>
       <td>MAE ↓</td>
       <td><strong>0.0023</strong></td>
       <td>0.0027</td>
@@ -99,7 +99,7 @@
       <td>0.9160</td>
     </tr>
     <tr>
-      <td rowspan="3"><strong>NASA & CALCE</strong><br>(8个电池平均)</td>
+      <td rowspan="3"><strong>NASA & CALCE</strong><br>(Average of 8 cells)</td>
       <td>MAE ↓</td>
       <td><strong>0.0102</strong></td>
       <td>0.0163</td>
@@ -126,5 +126,5 @@
   </tbody>
 </table>
 
-## 原始文献{#原始文献}
+## Original Reference{#original-reference}
 [*Li X, Zhao M, Zhong S, et al. BMSFormer: An efficient deep learning model for online state-of-health estimation of lithium-ion batteries under high-frequency early SOC data with strong correlated single health indicator[J]. Energy, 2024, 313(C).*](/BMSFormer.pdf)

@@ -5,7 +5,7 @@
 - 深度学习模型：虽然能够提供准确的预测，但其计算复杂度过高，难以在资源受限的嵌入式设备上运行；
 - 传统模型:虽然计算开销小，但在面对复杂的电池非线性退化时，精度往往难以令人满意。
 
-近期发表在《*Energy*》上的论文《***BMSFormer An efficient deep learning model for online state-of-health***》提出了一种名为 **BMSFormer**的轻量化深度学习模型，通过平衡计算效率与预测精度，为电池在线监测提供了新的解决方案。
+近期发表在《*Energy*》上的论文《***BMSFormer: An efficient deep learning model for online state-of-health estimation of lithium-ion batteries under high-frequency early SOC data with strong correlated single health indicator***》提出了一种名为 **BMSFormer**的轻量化深度学习模型，通过平衡计算效率与预测精度，为电池在线监测提供了新的解决方案。
 
 ## SOH估计方法{#SOH方法}
 目前的 SOH 估计研究主要面临三大痛点：
@@ -57,9 +57,9 @@
 ## 实验表现{#实验表现}
 通过在**Oxford、NASA 和 CALCE**三大权威数据集上的验证，BMSFormer展现了压倒性的优势：
 
-- 精度断层领先：在所有数据集上，其误差指标（$MAE$ 和 $RMSE$）均为最低 。相比传统$LSTM$模型，平均误差降低了$47\%$ 至 $73\%$。
-
-- 拟合近乎完美：其$R^{2}$评分在各场景下均最接近 $1$（最高达 $0.9934$），证明其预测值与真实健康状态最为贴合。
+- **精度断层领先**：在所有数据集上，其误差指标（MAE和RMSE）均为最低。相比传统LSTM模型，平均误差降低了 47% 至 73% 。
+ 
+- **拟合近乎完美**：其R²评分在各场景下均最接近 1（最高达 0.9934），证明其预测值与真实健康状态最为贴合。
 <table style="width:100%; border-collapse: collapse; text-align: center;" border="1">
   <thead>
     <tr style="background-color: #f2f2f2;">
